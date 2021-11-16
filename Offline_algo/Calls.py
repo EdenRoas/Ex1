@@ -8,11 +8,11 @@ class calls():
     UP = 1
     DOWN = -1
 
-    def __init__(self, _callTime, _src, _dest, _assignedEle):
+    def __init__(self, _callTime, _src, _dest):
         self._callTime = _callTime
         self._src = _src
         self._dest = _dest
-        self._assignedEle = _assignedEle
+        self._assignedEle
 
     def getState(self):
         """returns this call current state"""
@@ -36,6 +36,9 @@ class calls():
         if self._src > self._dest:
             return self.DOWN
         return self.UP
+
+    def setElevator(self, index):
+        self._assignedEle = index
 
     def allocatedTo(self):
         """This methods return the index of the Elevator in the building to which this call
