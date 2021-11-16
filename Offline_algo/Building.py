@@ -1,4 +1,4 @@
-from elevator import Elevator
+import Elevator
 
 
 class Building():

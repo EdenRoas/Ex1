@@ -1,23 +1,45 @@
-class calls():
+import Elevator
 
-/**
- * This interface represents a call for an elevator - with a dedicated destination (aka smart Elevators).
- * The call has few states: {Init, Going2SRC, Going2Dest, Done}, each state has a time stamp (in seconds).
- */
-public interface CallForElevator {
-    public static final int INIT=0, GOING2SRC=1, GOIND2DEST=2, DONE=3;
-    public static final int UP=1, DOWN=-1;
-    /** returns this call current state. */
-    public int getState();
-    /** Returns the time (in second) of the given state, if "not there yet" returns -1
-     * @param state - the int representing the state for which the time stamp is requested. */
-    public double getTime(int state);
-    /** @return the source floor of this elevator call was init at. */
-    public int getSrc();
-    /** @return the destenation floor to which this elevator call is targeted to. */
-    public int getDest();
-    /** @return the type of this call {UP,DOWN}; */
-    public int getType();
-    /** This methods return the index of the Elevator in the building to which this call was assigned to, if not yet Assigned --> return -1 */
-    public int allocatedTo() ;
-}
+class calls():
+    INIT = 0
+    GOING2SRC = 1
+    GOIND2DEST = 2
+    DONE = 3
+    UP = 1
+    DOWN = -1
+
+    def __init__(self, _callTime, _src, _dest, _assignedEle):
+        self._callTime = _callTime
+        self._src = _src
+        self._dest = _dest
+        self._assignedEle = _assignedEle
+
+    def getState(self):
+        """returns this call current state"""
+        pass
+
+    def getTime(self,state):
+        """Returns the time (in second) of the given state, if "not there yet" returns -1
+         @param state - the int representing the state for which the time stamp is requested"""
+        pass
+
+    def getSrc(self):
+        """@return the source floor of this elevator call was init at."""
+        return self._src
+
+    def getDest(self):
+        """@return the destenation floor to which this elevator call is targeted to."""
+        return self._dest
+
+    def getType(self):
+        """@return the type of this call {UP,DOWN}"""
+        if self._src > self._dest:
+            return self.DOWN
+        return self.UP
+
+    def allocatedTo(self):
+        """This methods return the index of the Elevator in the building to which this call
+         was assigned to, if not yet Assigned --> return -1"""
+        if self._assignedEle == None:
+            return -1
+        return self._assignedEle

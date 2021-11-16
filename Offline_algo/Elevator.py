@@ -44,7 +44,6 @@ class Elevator():
     def stop(self) ->bool:  #
         pass
 
-
     def getStartTime(self):
         return self._startTime
 
