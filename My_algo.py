@@ -42,7 +42,7 @@ class my_algo():
 
     def allocated(self, call):
         index = 0
-        minTimeToArrive = sys.maxsize()
+        minTimeToArrive = sys.maxsize
         for elev in self._building._elevators:
             if elev.getState() != call.getType():
                 continue
