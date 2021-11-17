@@ -1,17 +1,18 @@
-import Elevator
-import Building
-import Calls
+from Calls import Calls
+from Building import Building
+from Elevator import Elevator
 import json
 import csv
 import sys
 import math
+
 
 class My_algo():
 
     def __init__(self, buildingfile, callsfile):
         self.buildingfile = buildingfile
         self.callsfile = callsfile
-        self.building = { }
+        self.building = {}
         self.init_from_json_file(buildingfile)
         self.calls = []
         self.init_from_csv_file(callsfile)
@@ -20,14 +21,14 @@ class My_algo():
         try:
             with open(file_name, 'w', newline="") as file:
                 csvwriter = csv.writer(file)
-                #csvwriter.writerow(header)
+                # csvwriter.writerow(header)
                 csvwriter.writerows(self.calls)
 
         except IOError as e:
             print(e)
 
     def init_from_csv_file(self, file_name: str):
-        with open(file_name , "r") as f:
+        with open(file_name, "r") as f:
             csvreader = csv.reader(f)
             header = next(csvreader)
             rows = []
@@ -57,7 +58,7 @@ class My_algo():
             if (call.getType() == Calls.DOWN) and (elev.getstate == Elevator.DOWN):
                 if elev.getPos() < call.getSrc():
                     continue
-            tmpTime = CalcluateTimeToArrive(elev, call.getSrc(), call)
+            tmpTime = self.__CalcluateTimeToArrive(elev, call.getSrc(), call)
             if tmpTime < minTimeToArrive:
                 minTimeToArrive = tmpTime
                 index = elev.getID
@@ -75,20 +76,20 @@ class My_algo():
             cl = self.calls[i]
 
         while cl is not call:
-            if cl.getState is not Calls.DONE:
-                if cl[6] == elev.getID():
-                 if call.getTtpe() == Calls.UP:
+            # if cl.getState is not DONE:
+            if cl[6] == elev.getID():
+                if call.getTtpe() == Calls.UP:
                     if cl[2] < floor:
                         arraysSet.add(cl.getSrc())
-                    if cl[3] < floor:
+                if cl[3] < floor:
+                    arraysSet.add(cl.getDest())
+                if call.getTtpe() == Calls.DOWN:
+                    if cl[2] > floor:
+                        arraysSet.add(cl.getSrc())
+                    if cl[3] > floor:
                         arraysSet.add(cl.getDest())
-                    if call.getTtpe() == Calls.DOWN:
-                        if cl[2] > floor:
-                            arraysSet.add(cl.getSrc())
-                        if cl[3] > floor:
-                            arraysSet.add(cl.getDest())
             cl = self.calls[self.calls.index(cl) + 1]
-        numberOfStops = len(ArraysSet)
+        numberOfStops = len(arraysSet)
         totalTimeToOpen = numberOfStops * elev.getTimeForOpen()
         totalTimeToClose = numberOfStops * elev.getTimeForClose()
         totalTimeToStart = numberOfStops * elev.getStartTime
@@ -97,29 +98,28 @@ class My_algo():
         totalTimeToArrive = totalTimeToOpen + totalTimeToClose + totalTimeToPassAllFloors + totalTimeToStart + totalTimeToStop
         return totalTimeToArrive
 
-    def updateFile(self) -> None:
-        file_name = "Ex1_Calls"
-        #if the number of elevator is 0 then dont change the file and save it as it is
+    def updateFile(self, file_name="Ex1_Calls") -> None:
+        # if the number of elevator is 0 then dont change the file and save it as it is
         if self.building.numberOfElevetors == 0:
-            return self.save_to_file(file_name)
-        #if the number of elevator is 1 then change the last column of the all the calls to 0,
-        #meaning send all the calls to elevator 0 and then save the array of calls to a new fil
+            self.save_to_file(file_name)
+            return
+        # if the number of elevator is 1 then change the last column of the all the calls to 0,
+        # meaning send all the calls to elevator 0 and then save the array of calls to a new fil
         elif self.building.numberOfElevetors == 1:
             for call in self.calls:
                 call[6] = 0
-            return self.save_to_file(file_name)
+            self.save_to_file(file_name)
+            return
         for call in self.calls:
             self.allocated(call)
         for call in self.calls:
-                call[6] = Calls.allocatedTo(call)
-        return self.save_to_file(file_name)
+            call[6] = Calls.allocatedTo(call)
+        self.save_to_file(file_name)
+        return
 
-    def main(self):
-        pass
-
-
-
-
-
-
+if __name__ == "__main__":
+    # fileBuilding = open("Ex1\Ex1_Building\B1.json", "r")
+    # fileCall = open("Ex1\Ex1_calls\call_a.csv", "r")
+    a = My_algo("C:\Users\edenr\PycharmProjects\Ex1\Ex1_Building\B1.json", "C:\Users\edenr\PycharmProjects\Ex1\Ex1_calls\Calls_a.csv")
+    a.updateFile("Ex1_calls_c_1")
 
