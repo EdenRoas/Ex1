@@ -96,7 +96,7 @@ class my_algo():
 
     def updateFile(self, file_name = "Ex1_Calls") -> None:
         #if the number of elevator is 0 then dont change the file and save it as it is
-        if self._building.numberOfElevetors == 0:
+        if self._building.numberOfElevetors() == 0:
             self.save_to_file(file_name, self.callsArray)
             return
         #if the number of elevator is 1 then change the last column of the all the calls to 0,
@@ -106,11 +106,14 @@ class my_algo():
                 call[5] = 0
             self.save_to_file(file_name, self.callsArray)
             return
+        array_of_calls = []
         for call in self.callsArray:
             call_obj = calls(_callTime = call[1], _src = call[2], _dest = call[3])
+            array_of_calls.append(call_obj)
             self.allocated(call_obj)
+        index = 0
         for call in self.callsArray:
-            call_obj = calls(_callTime=call[1], _src=call[2], _dest=call[3])
+            call_obj = array_of_calls[index]
             call[5] = calls.allocatedTo(call_obj)
         self.save_to_file(file_name, self.callsArray)
         return
