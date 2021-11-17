@@ -4,7 +4,7 @@ import Calls
 import json
 import csv
 import sys
-import Math
+import math
 
 class My_algo():
 
@@ -45,7 +45,7 @@ class My_algo():
         self.building = new_building_dict
 
     def allocated(self, call):
-        minTimeToArrive = sys.maxsize, tmpTime
+        minTimeToArrive = sys.maxsize
         for elev in self.building._elevators:
             if elev.getstate() != call.getType():
                 continue
@@ -57,14 +57,14 @@ class My_algo():
             if (call.getType() == Calls.DOWN) and (elev.getstate == Elevator.DOWN):
                 if elev.getPos() < call.getSrc():
                     continue
-            tmpTime = CalcluateTimeToArrive(elev, call.getSrc(), call)
+            tmpTime = self.__CalcluateTimeToArrive(elev, call.getSrc(), call)
             if tmpTime < minTimeToArrive:
                 minTimeToArrive = tmpTime
-            index = i
+                index = elev.getID
         call.setElavator(index)
 
     def __CalcluateTimeToArrive(self, elev, floor, call):
-        diffBetweenFloors = Math.abs(elev.getPos() - floor)
+        diffBetweenFloors = math.abs(elev.getPos() - floor)
         arraysSet = {}
         i = 0
         cl = self.calls[i]
@@ -75,20 +75,20 @@ class My_algo():
             cl = self.calls[i]
 
         while cl is not call:
-            if cl.getState is not DONE:
-                if cl[6] == elev.getID():
-                 if call.getTtpe() == Calls.UP:
-                    if cl[2] < floor:
+           # if cl.getState is not DONE:
+            if cl[6] == elev.getID():
+                if call.getTtpe() == Calls.UP:
+                 if cl[2] < floor:
+                     arraysSet.add(cl.getSrc())
+                if cl[3] < floor:
+                    arraysSet.add(cl.getDest())
+                if call.getTtpe() == Calls.DOWN:
+                    if cl[2] > floor:
                         arraysSet.add(cl.getSrc())
-                    if cl[3] < floor:
+                    if cl[3] > floor:
                         arraysSet.add(cl.getDest())
-                    if call.getTtpe() == Calls.DOWN:
-                        if cl[2] > floor:
-                            arraysSet.add(cl.getSrc())
-                        if cl[3] > floor:
-                            arraysSet.add(cl.getDest())
             cl = self.calls[self.calls.index(cl) + 1]
-        numberOfStops = len(ArraysSet)
+        numberOfStops = len(arraysSet)
         totalTimeToOpen = numberOfStops * elev.getTimeForOpen()
         totalTimeToClose = numberOfStops * elev.getTimeForClose()
         totalTimeToStart = numberOfStops * elev.getStartTime
@@ -97,28 +97,30 @@ class My_algo():
         totalTimeToArrive = totalTimeToOpen + totalTimeToClose + totalTimeToPassAllFloors + totalTimeToStart + totalTimeToStop
         return totalTimeToArrive
 
-    def updateFile(self) -> None:
-        file_name = "Ex1_Calls"
+    def updateFile(self, file_name = "Ex1_Calls") -> None:
         #if the number of elevator is 0 then dont change the file and save it as it is
         if self.building.numberOfElevetors == 0:
-            return self.save_to_file(file_name)
+            self.save_to_file(file_name)
+            return
         #if the number of elevator is 1 then change the last column of the all the calls to 0,
         #meaning send all the calls to elevator 0 and then save the array of calls to a new fil
         elif self.building.numberOfElevetors == 1:
             for call in self.calls:
                 call[6] = 0
-            return self.save_to_file(file_name)
+            self.save_to_file(file_name)
+            return
         for call in self.calls:
             self.allocated(call)
         for call in self.calls:
                 call[6] = Calls.allocatedTo(call)
-        return self.save_to_file(file_name)
+        self.save_to_file(file_name)
+        return
 
     def main(self):
-        pass
-
-
-
+            fileBuilding = open("B1.jason", "r")
+            fileCall = open("call_a", "r")
+            my_algo = My_algo(fileBuilding, fileCall)
+            my_algo.updateFile("Ex1_calls_c_1")
 
 
 

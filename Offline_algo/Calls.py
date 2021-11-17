@@ -16,12 +16,12 @@ class calls():
 
     def getState(self):
         """returns this call current state"""
-        pass
+        
 
-    def getTime(self,state):
-        """Returns the time (in second) of the given state, if "not there yet" returns -1
-         @param state - the int representing the state for which the time stamp is requested"""
-        pass
+   # def getTime(self,state):
+    #    """Returns the time (in second) of the given state, if "not there yet" returns -1
+     #    @param state - the int representing the state for which the time stamp is requested"""
+      #  pass
 
     def getSrc(self):
         """@return the source floor of this elevator call was init at."""

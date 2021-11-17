@@ -35,14 +35,9 @@ class Elevator():
     def getState(self): #
         return self.state
 
-    def getPos(self):  #
-        pass
 
-    def goTo(self) ->bool: #
-        pass
-
-    def stop(self) ->bool:  #
-        pass
+   # def getPos(self):  #
+    #    pass
 
     def getStartTime(self):
         return self._startTime
