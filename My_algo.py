@@ -28,7 +28,7 @@ class my_algo():
     def init_from_csv_file(self, file_name: str):
         with open(file_name , "r") as f:
             csvreader = csv.reader(f)
-            header = next(csvreader)
+            # header = next(csvreader)
             rows = []
             for row in csvreader:
                 rows.append(row)
@@ -41,60 +41,68 @@ class my_algo():
         return new_building_dict
 
     def allocated(self, call):
-        index = 0
+        choosenelev = None
         minTimeToArrive = sys.maxsize
-        for elev in self._building._elevators:
+        for elev in self._building._elevators_list:
+            if elev.getState() == elevator.LEVEL:
+                call.setElevator(elev.getID())
+                elev.UpdateListOfCalls(call)
+                return
             if elev.getState() != call.getType():
                 continue
             if elev.getState() == elevator.ERROR:
                 continue
-            if (call.getType() == calls.UP) and (elev.getState() == elevator.UP):
+            if (call.getType() == calls.UP) and (elev.getState() != elevator.UP):
                 #if elev.getPos() > call.getSrc():
                 continue
-            if (call.getType() == calls.DOWN) and (elev.getState() == elevator.DOWN):
+            if (call.getType() == calls.DOWN) and (elev.getState() != elevator.DOWN):
                 #if elev.getPos() < call.getSrc():
                 continue
             tmpTime = self.__CalcluateTimeToArrive(elev, call.getSrc(), call)
             if tmpTime < minTimeToArrive:
                 minTimeToArrive = tmpTime
-        index = elev.getID()
-        call.setElevator(index)
-        elev.UpdateListOfCalls(call)
+                choosenelev = elev
+        elevid = choosenelev.getID()
+        call.setElevator(elevid)
+        choosenelev.UpdateListOfCalls(call)
 
     def __CalcluateTimeToArrive(self, elev, floor, call):
-        diffBetweenFloors = abs(elev.getPos() - floor)
+        diffBetweenFloors = abs(elev._call_list[len(elev._call_list) - 1].getDest() - floor)
+        # diffBetweenFloors = abs(elev.getPos() - floor)
         arraysSet = set()
         i = 0
         cl = self.callsArray[i]
-        while cl is not call:
-            if cl[1] <= (call[1] - 20):
+        while (i < len(self.callsArray)) and (cl is not call):
+            cl = self.callsArray[i]
+            if (float)(cl[1]) <= ((float)(call.get_call_time()) - 20):
                 break
             i += 1
-            cl = self.callsArray[i]
-        while cl is not call:
-           # if cl.getState is not DONE:
+
+        while (i < (len(self.callsArray) - 1)) and (cl is not call):
+            # if cl.getState is not DONE:
             if cl[5] == elev.getID():
                 if call.getTtpe() == calls.UP:
-                 if cl[2] < floor:
-                     arraysSet.add(cl[2])
-                if cl[3] < floor:
-                    arraysSet.add(cl[3])
+                    if cl[2] < floor:
+                        arraysSet.add(cl[2])
+                    if cl[3] < floor:
+                        arraysSet.add(cl[3])
                 if call.getTtpe() == calls.DOWN:
                     if cl[2] > floor:
                         arraysSet.add(cl[2])
                     if cl[3] > floor:
                         arraysSet.add(cl[3])
-            cl = self.callsArray[self.callsArray.index(cl) + 1]
+            i += 1
+            cl = self.callsArray[i]
         numberOfStops = len(arraysSet)
-        totalTimeToOpen = numberOfStops * elev.getTimeForOpen()
-        totalTimeToClose = numberOfStops * elev.getTimeForClose()
+        totalTimeToOpen = numberOfStops * elev.gettimeForOpen()
+        totalTimeToClose = numberOfStops * elev.gettimeForClose()
         totalTimeToStart = numberOfStops * elev.getStartTime()
         totalTimeToStop = numberOfStops * elev.getStopTime()
         totalTimeToPassAllFloors = diffBetweenFloors * elev.getSpeed()
         totalTimeToArrive = totalTimeToOpen + totalTimeToClose + totalTimeToPassAllFloors + totalTimeToStart + totalTimeToStop
         return totalTimeToArrive
 
-    def updateFile(self, file_name = "Ex1_Calls") -> None:
+    def updateFile(self, file_name="Ex1_Calls") -> None:
         #if the number of elevator is 0 then dont change the file and save it as it is
         if self._building.numberOfElevetors() == 0:
             self.save_to_file(file_name, self.callsArray)
@@ -115,5 +123,6 @@ class my_algo():
         for call in self.callsArray:
             call_obj = array_of_calls[index]
             call[5] = calls.allocatedTo(call_obj)
+            index += 1
         self.save_to_file(file_name, self.callsArray)
         return

@@ -23,13 +23,15 @@ class calls():
     #    @param state - the int representing the state for which the time stamp is requested"""
     #  pass
 
+    def get_call_time(self):
+        return self._callTime
     def getSrc(self):
         """@return the source floor of this elevator call was init at."""
-        return self._src
+        return (int)(self._src)
 
     def getDest(self):
         """@return the destenation floor to which this elevator call is targeted to."""
-        return self._dest
+        return (int)(self._dest)
 
     def getType(self):
         """@return the type of this call {UP,DOWN}"""
@@ -46,4 +48,8 @@ class calls():
         if self._assignedEle == None:
             return -1
         return self._assignedEle
+
+    def __str__(self):
+        return f"the time of call: {self._callTime} \t source floor: {self._src} \t destination floor: {self._dest} \n\t" \
+               f"the elevator of the call: {self._assignedEle}"
 
