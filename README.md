@@ -1,6 +1,10 @@
 # Ex1
 The project reprsent an ofline algorithem of a smart elevator
 
+Submissions:
+Eden Roas- 318356599
+Hadar Bitan- 318463882
+
 We looked for a sources of a smart elevator and a algorithm of an elevator\smart elevator, wee found a few articals on the subjec that helped understand the projrct better.
 Here are the articals:
 
@@ -19,3 +23,8 @@ Second step- we'll performe a basic tests in cases of zero elevators and only on
 Third step- in a cases of 2 elevatos or more we'll check which elevator is the optimal one for this specific call according to the time it takes the elevator to get to the call, considering all the floors it has to stop in.
 Fourth step- after we'll find the right elevator we'll update the number of elevator in the right variable of the call and add the call to the list of calls of the elevator.
 Fifth step- we'll take the updated array of calls and create a new csv file from it.
+
+
+the project's UML:
+
+![image](https://user-images.githubusercontent.com/86705118/142629166-9451e9c3-c3f5-4881-9b4e-2e2aad7f9c53.png)
