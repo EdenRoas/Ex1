@@ -9,19 +9,10 @@ class calls():
     DOWN = -1
 
     def __init__(self, _callTime, _src, _dest):
-        self._callTime = _callTime
-        self._src = _src
-        self._dest = _dest
+        self._callTime = float(_callTime)
+        self._src = int(_src)
+        self._dest = int(_dest)
         self._assignedEle = -1
-
-    # def getState(self):
-    #     """returns this call current state"""
-    #
-
-    #def getTime(self,state):
-    #"""Returns the time (in second) of the given state, if "not there yet" returns -1
-    #    @param state - the int representing the state for which the time stamp is requested"""
-    #  pass
 
     def get_call_time(self):
         return self._callTime
@@ -49,7 +40,7 @@ class calls():
             return -1
         return self._assignedEle
 
-    def __str__(self):
-        return f"the time of call: {self._callTime} \t source floor: {self._src} \t destination floor: {self._dest} \n\t" \
-               f"the elevator of the call: {self._assignedEle}"
+    def __iter__(self):
+        return self.employees.values().__iter__()
 
+            

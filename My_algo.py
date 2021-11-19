@@ -20,8 +20,8 @@ class my_algo():
         try:
             with open(file_name, 'w', newline="") as file:
                 csvwriter = csv.writer(file)
-                #csvwriter.writerow(header)
-                csvwriter.writerows(array_Of_Calls)
+                csvwriter.writerow(array_Of_Calls[0])
+                csvwriter.writerows(array_Of_Calls[1:])
         except IOError as e:
             print(e)
 
@@ -41,7 +41,7 @@ class my_algo():
         return new_building_dict
 
     def allocated(self, call):
-        choosenelev = None
+        choosenelev = self._building._elevators_list[0]
         minTimeToArrive = sys.maxsize
         for elev in self._building._elevators_list:
             if elev.getState() == elevator.LEVEL:
@@ -52,12 +52,12 @@ class my_algo():
                 continue
             if elev.getState() == elevator.ERROR:
                 continue
-            if (call.getType() == calls.UP) and (elev.getState() != elevator.UP):
-                #if elev.getPos() > call.getSrc():
-                continue
-            if (call.getType() == calls.DOWN) and (elev.getState() != elevator.DOWN):
-                #if elev.getPos() < call.getSrc():
-                continue
+            if (call.getType() == calls.UP) and (elev.getState() == elevator.UP):
+                if elev.getPos((float)(call.get_call_time())) > call.getSrc():
+                    continue
+            if (call.getType() == calls.DOWN) and (elev.getState() == elevator.DOWN):
+                if elev.getPos((float)(call.get_call_time())) < call.getSrc():
+                    continue
             tmpTime = self.__CalcluateTimeToArrive(elev, call.getSrc(), call)
             if tmpTime < minTimeToArrive:
                 minTimeToArrive = tmpTime
@@ -67,8 +67,7 @@ class my_algo():
         choosenelev.UpdateListOfCalls(call)
 
     def __CalcluateTimeToArrive(self, elev, floor, call):
-        diffBetweenFloors = abs(elev._call_list[len(elev._call_list) - 1].getDest() - floor)
-        # diffBetweenFloors = abs(elev.getPos() - floor)
+        diffBetweenFloors = abs(elev.getPos((float)(call.get_call_time())) - floor)
         arraysSet = set()
         i = 0
         cl = self.callsArray[i]
@@ -77,9 +76,8 @@ class my_algo():
             if (float)(cl[1]) <= ((float)(call.get_call_time()) - 20):
                 break
             i += 1
-
         while (i < (len(self.callsArray) - 1)) and (cl is not call):
-            # if cl.getState is not DONE:
+            #if cl.getState is not DONE:
             if cl[5] == elev.getID():
                 if call.getTtpe() == calls.UP:
                     if cl[2] < floor:
