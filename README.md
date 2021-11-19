@@ -18,11 +18,11 @@ In simple words in offline algorithm all the inputs is available to us in advanc
 
 The algorithm:   
 First step- we'll receive the json and csv files which contains the data of the building and the sorted array of calls,
-and create a new building and a new array of calls(each cell in the array contains a new call) containing the data we received from the files. 
-Second step- we'll performe a basic tests in cases of zero elevators and only one elevator.
-Third step- in a cases of 2 elevatos or more we'll check which elevator is the optimal one for this specific call according to the time it takes the elevator to get to the call, considering all the floors it has to stop in.
+and create a new building and a new array of calls(each cell in the array contains a new call) containing the data we received from the files.      
+Second step- we'll performe a basic tests in cases of zero elevators and only one elevator.    
+Third step- in a cases of 2 elevatos or more we'll check which elevator is the optimal one for this specific call according to the time it takes the elevator to get to the call, considering all the floors it has to stop in.       
 Fourth step- after we'll find the right elevator we'll update the number of elevator in the right variable of the call and add the call to the list of calls of the elevator.
-Fifth step- we'll take the updated array of calls and create a new csv file from it.
+Fifth step- we'll take the updated array of calls and create a new csv file from it.    
 
 
 the project's UML:
