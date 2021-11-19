@@ -17,8 +17,7 @@ class Ex1():
         self.callsArray = self.init_from_csv_file(callsfile)
         self.updateFile(outfile)
 
-
-    def save_to_file(self, file_name, array_Of_Calls):
+    def __save_to_file(self, file_name, array_Of_Calls):
         try:
             with open(file_name, 'w', newline="") as file:
                 csvwriter = csv.writer(file)
@@ -36,7 +35,7 @@ class Ex1():
                 rows.append(row)
         return rows
 
-    def init_from_json_file(self, file_name: str) -> None:
+    def init_from_json_file(self, file_name: str):
         new_building_dict = {}
         with open(file_name, "r") as f:
             new_building_dict = json.load(f)
@@ -105,14 +104,14 @@ class Ex1():
     def updateFile(self, file_name="Ex1_Calls") -> None:
         #if the number of elevator is 0 then dont change the file and save it as it is
         if self._building.numberOfElevetors() == 0:
-            self.save_to_file(file_name, self.callsArray)
+            self.__save_to_file(file_name, self.callsArray)
             return
         #if the number of elevator is 1 then change the last column of the all the calls to 0,
         #meaning send all the calls to elevator 0 and then save the array of calls to a new fil
         elif self._building.numberOfElevetors() == 1:
             for call in self.callsArray:
                 call[5] = 0
-            self.save_to_file(file_name, self.callsArray)
+            self.__save_to_file(file_name, self.callsArray)
             return
         array_of_calls = []
         for call in self.callsArray:
@@ -124,7 +123,7 @@ class Ex1():
             call_obj = array_of_calls[index]
             call[5] = calls.allocatedTo(call_obj)
             index += 1
-        self.save_to_file(file_name, self.callsArray)
+        self.__save_to_file(file_name, self.callsArray)
         return
 
 if __name__ == "__main__":

@@ -94,9 +94,3 @@ class elevator():
 
     def getStopTime(self):
         return (float)(self._stopTime)
-
-    def __str__(self):
-        return f"elevator number {self._id}: \n\t speed = {self._speed} \n\t minFloor = {self._minFloor} \n\t" \
-               f"maxFloor = {self._maxFloor} \n\t close time = {self._closeTime} \n\t" \
-               f"open time = {self._openTime} \n\t start time = {self._startTime} \n\t" \
-               f"stop time = {self._stopTime}"

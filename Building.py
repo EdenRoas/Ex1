@@ -22,8 +22,3 @@ class building():
 
     def getElevetor(self, index):
         return self._elevators_list[index]
-
-    def __str__(self):
-        return f"{type(self._elevators_list)} \n building: maxFloor -> {self._maxFloor} \t minFloor -> {self._minFloor} \t number of elevator -> {self.numberOfElevetors()} \t" \
-               f" list of elevator -> {self._elevators_list[0]}"
-
